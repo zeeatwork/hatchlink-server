@@ -2,26 +2,30 @@ const logger = require("../logger");
 
 const NO_ERRORS = null;
 
-function getNoteValidationError({ note_title, note_details, parent_folder }) {
-  if (!note_title) {
-    logger.error(`Invalid name'${note_title}' supplied`);
+function getReviewValidationError({
+  up_down_rating,
+  review_comments,
+  parent_resource,
+}) {
+  if (!up_down_rating) {
+    logger.error(`Invalid '${up_down_rating}' supplied`);
     return {
       error: {
-        message: `'note_title' must be supplied.`,
+        message: `'up_down_rating' must be supplied.`,
       },
     };
-  } else if (!note_details) {
-    logger.error(`Invalid name'${note_details}' supplied`);
+  } else if (!review_comments) {
+    logger.error(`Invalid name'${review_comments}' supplied`);
     return {
       error: {
-        message: `'note_details' must be supplied.`,
+        message: `'review_comments' must be supplied.`,
       },
     };
-  } else if (!parent_folder) {
-    logger.error(`Invalid folder'${parent_folder}' supplied`);
+  } else if (!parent_resource) {
+    logger.error(`Invalid resource'${parent_resource}' supplied`);
     return {
       error: {
-        message: `'parent_folder' must be supplied.`,
+        message: `'parent_resource' must be supplied.`,
       },
     };
   }
@@ -30,5 +34,5 @@ function getNoteValidationError({ note_title, note_details, parent_folder }) {
 }
 
 module.exports = {
-  getNoteValidationError,
+  getReviewValidationError,
 };
