@@ -32,11 +32,11 @@ reviewsRouter
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { name, content, reviewId } = req.body;
+    const { upDownRating, comment, reviewId } = req.body;
     const newReview = {
-      note_title: name,
-      note_details: content,
-      parent_folder: folderId,
+      up_down_rating: upDownRating,
+      review_comments: comments,
+      parent_resource: resourceId,
     };
 
     for (const [key, value] of Object.entries(newReview)) {
@@ -83,14 +83,14 @@ reviewsRouter
       .catch(next);
   })
   .patch(jsonParser, (req, res, next) => {
-    const { note_title, note_details } = req.body;
-    const reviewToUpdate = { note_title, note_details };
+    const { up_down_rating, review_comments } = req.body;
+    const reviewToUpdate = { up_down_rating, review_comments };
 
     const numberOfValues = Object.values(reviewToUpdate).filter(Boolean).length;
     if (numberOfValues === 0)
       return res.status(400).json({
         error: {
-          message: `Request body must contain either 'note_title' or 'note_details'`,
+          message: `Request body must contain either 'up_down_rating' or 'review_comments'`,
         },
       });
 
