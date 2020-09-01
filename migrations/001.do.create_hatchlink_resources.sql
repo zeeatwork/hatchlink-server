@@ -4,7 +4,7 @@ CREATE TABLE hatchlink_resources(
   name TEXT NOT NULL,
   url TEXT,
   cost INTEGER,
-  format TEXT,
-  subject TEXT,
+  format TEXT NOT NULL,
+  subject TEXT NOT NULL,
   date_created TIMESTAMPTZ DEFAULT now() NOT NULL
 );
