@@ -6,7 +6,7 @@ This is a boilerplate project used for starting new projects!
 
 Complete the following steps to start a new project (NEW-PROJECT-NAME):
 
-1. CD TO Projects folder
+1. CD TO Projects resourcer
 2. Clone this repository to your local machine ANDB`cd` into the cloned repository`git clone CLONE-URL NEW-PROJECT-NAME && cd $_`
 3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
 4. Install the node dependencies `npm install`
@@ -24,4 +24,5 @@ Run the tests `npm test`
 ## Deploying
 
 When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+
 # hatchlink-server
