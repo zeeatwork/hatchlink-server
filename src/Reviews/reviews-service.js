@@ -1,29 +1,51 @@
-/*CRUD OPERATIONS for Reviews*/
+const xss = require("xss");
 
 const ReviewsService = {
-  getAllReviews(knex) {
-    return knex.select("*").from("hatchlink_reviews");
+  getById(db, id) {
+    return db
+      .from("hatchlink_reviews AS rev")
+      .select(
+        "rev.id",
+        "rev.rating",
+        "rev.comment",
+        "rev.date_created",
+        "rev.parent_id",
+        db.raw(
+          `row_to_json(
+            (SELECT tmp FROM (
+              SELECT
+                usr.id,
+                usr.user_name,
+                usr.full_name,
+                usr.date_created,
+                usr.date_modified
+            ) tmp)
+          ) AS "user"`
+        )
+      )
+      .leftJoin("hatchlink_users AS usr", "rev.user_id", "usr.id")
+      .where("rev.id", id)
+      .first();
   },
 
-  insertReview(knex, newReview) {
-    return knex
+  insertReview(db, newReview) {
+    return db
       .insert(newReview)
       .into("hatchlink_reviews")
       .returning("*")
-      .then((rows) => {
-        return rows[0];
-      });
+      .then(([review]) => review)
+      .then((review) => ReviewsService.getById(db, review.id));
   },
 
-  getById(knex, id) {
-    return knex.from("hatchlink_reviews").select("*").where("id", id).first();
-  },
-
-  deleteReview(knex, id) {
-    return knex("hatchlink_reviews").where({ id }).delete();
-  },
-  updateReview(knex, id, newReviewsFields) {
-    return knex("hatchlink_reviews").where({ id }).update(newReviewsFields);
+  serializeReview(review) {
+    return {
+      id: review.id,
+      rating: review.rating,
+      comment: xss(review.comment),
+      parent_id: review.parent_id,
+      date_created: review.date_created,
+      user: review.user || {},
+    };
   },
 };
 
