@@ -17,7 +17,7 @@ resourcesRouter
   .all(requireAuth)
   .all(checkResourceExists)
   .get((req, res) => {
-    res.json(ResourcesService.serializeResource(res.resource));
+    res.json(ResourcesService.serializeResources(res.resource));
   });
 
 resourcesRouter
@@ -55,4 +55,4 @@ async function checkResourceExists(req, res, next) {
   }
 }
 
-module.exports = ResourcesRouter;
+module.exports = resourcesRouter;

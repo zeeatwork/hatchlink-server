@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
-const thingsRouter = require("./things/things-router");
+const resourcesRouter = require("./resources/resources-router");
 const reviewsRouter = require("./reviews/reviews-router");
 const authRouter = require("./auth/auth-router");
 
@@ -18,7 +18,7 @@ app.use(
 app.use(cors());
 app.use(helmet());
 
-app.use("/api/things", thingsRouter);
+app.use("/api/resources", resourcesRouter);
 app.use("/api/reviews", reviewsRouter);
 app.use("/api/auth/", authRouter);
 

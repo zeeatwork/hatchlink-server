@@ -3,7 +3,7 @@ CREATE TABLE hatchlink_users (
   user_name TEXT NOT NULL UNIQUE,
   full_name TEXT NOT NULL,
   password TEXT NOT NULL,
-  admin BOOLEAN TEXT NOT NULL,
+  admin BOOLEAN NOT NULL,
   date_created TIMESTAMPTZ NOT NULL DEFAULT now(),
   date_modified TIMESTAMPTZ
 );

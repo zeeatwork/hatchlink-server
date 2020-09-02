@@ -6,49 +6,43 @@ TRUNCATE
   hatchlink_users
   RESTART IDENTITY CASCADE;
 
-INSERT INTO hatchlink_users (user_name, full_name, admin, password, date_created)
+INSERT INTO hatchlink_users (user_name, full_name, admin, password)
 VALUES
   (
   'laurie22',
   'Laurie Sampson',
   FALSE,
-  'orange',
-  2010-10-23 00:19:34
+  'juice1'
 ),
 (
   'sourpatch',
   'Lady Bunny',
   TRUE,
-  'kiidy',
-  2006-10-31 11:50:22
+  'arrow'
 ),
 (
   'c.bloggs',
   'Charlie Bloggs',
   FALSE,
-  'carrot',
-  2017-04-04 05:45:32
+  'bloggsc'
 ),
 (
   's.smith',
   'Sam Smith',
   FALSE,
-  'gorbals',
-  2000-04-27 08:15:41
+  'syrup'
 ),
 (
   'lexlor',
   'Alex Taylor',
   FALSE,
-  'trucks',
-  2019-06-12 03:58:13
+  'alexone'
 ),
 (
   'wippy',
   'Maxwell Houser',
   FALSE,
-  'hiding',
-  2000-03-29 22:15:53
+  'wippypassword'
 );
 
 INSERT INTO hatchlink_resources (name, image, cost, format, url, subject)
@@ -80,7 +74,7 @@ INSERT INTO hatchlink_reviews (
     'This thing is amazing.',
     4,
     1,
-    2
+    2,
     1,
     TRUE,
     FALSE,
@@ -135,7 +129,7 @@ INSERT INTO hatchlink_reviews (
     'I think I swallowed a bug.',
     1,
     2,
-    1
+    1,
     5,
     FALSE,
     TRUE,
@@ -168,8 +162,8 @@ INSERT INTO hatchlink_reviews (
     'I heard about this one time at band camp.',
     3,
     4,
-    4
-    7,
+    4,
+    4,
     TRUE,
     TRUE,
     FALSE,
@@ -179,8 +173,8 @@ INSERT INTO hatchlink_reviews (
     'big time many goodness!!!',
     5,
     5,
-    3
-    8,
+    3,
+    5,
    TRUE,
     TRUE,
     FALSE,
@@ -190,8 +184,8 @@ INSERT INTO hatchlink_reviews (
     'Iste, architecto obcaecati tenetur quidem voluptatum ipsa quam!',
     2,
     1,
-    5
-    9,
+    5,
+    2,
     FALSE,
     TRUE,
     FALSE,
@@ -201,8 +195,8 @@ INSERT INTO hatchlink_reviews (
     'There are some better things. There are also some worse things.',
     3,
     7,
-    1
-    6,
+    1,
+    3,
     FALSE,
     TRUE,
     TRUE,
@@ -212,7 +206,7 @@ INSERT INTO hatchlink_reviews (
     'Great holiday present for extraterrestrials (only the kind with the lightbulb heads).',
     4,
     7,
-    2
+    2,
     4,
     FALSE,
     TRUE,
@@ -223,7 +217,7 @@ INSERT INTO hatchlink_reviews (
     'It does not say this on the label, but this thing can be used to summon rain on the spring equinox with the proper incantation.',
     3,
     7,
-    3
+    3,
     2,
     TRUE,
     FALSE,
@@ -234,7 +228,7 @@ INSERT INTO hatchlink_reviews (
     'Do not believe the hype!',
     1,
     7,
-    4
+    4,
     1,
     TRUE,
     FALSE,
@@ -245,7 +239,7 @@ INSERT INTO hatchlink_reviews (
     'I would rather have a shoulder rub.',
     3,
     9,
-    6,
+    1,
     2,
     TRUE,
     FALSE,
@@ -257,7 +251,7 @@ INSERT INTO hatchlink_reviews (
     1,
     6,
     5,
-    8,
+    1,
     TRUE,
     FALSE,
     FALSE,
@@ -267,13 +261,18 @@ INSERT INTO hatchlink_reviews (
     'This would not fit inside the cabin of my horse-and-buggy, but it was a useful bribe after the string cheese incident.',
     4,
     6,
-    1
+    1,
+    4,
+    TRUE,
+    FALSE,
+    TRUE,
+    FALSE
   ),
   (
     'Slightly better than waking up deep in the forests of Madagascar and having no idea how you got there, but not THAT much better.',
     3,
     2,
-    8,
+    5,
     4,
     TRUE,
     FALSE,
@@ -284,10 +283,10 @@ INSERT INTO hatchlink_reviews (
     'Octopii give it eight tentacles up!',
     5,
     8,
-    7,
-    7,
+    1,
+    4,
     FALSE,
-    FALSE
+    FALSE,
     FALSE,
     TRUE
   );
