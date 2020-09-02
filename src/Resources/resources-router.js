@@ -1,13 +1,25 @@
 const express = require("express");
+const uuid = require("uuid");
+const logger = require("../logger");
+const { isWebUrl } = require("valid-url");
 const ResourcesService = require("./resources-service");
 const { requireAuth } = require("../middleware/jwt-auth");
 
 const resourcesRouter = express.Router();
+const bodyParser = express.json();
+
+const serializeResource = (resource) => ({
+  id: resource.id,
+  name: resource.name,
+  url: resource.url,
+  cost: resource.cost,
+  subject: resource.subject,
+});
 
 resourcesRouter.route("/").get((req, res, next) => {
   ResourcesService.getAllResources(req.app.get("db"))
-    .then((resources) => {
-      res.json(ResourcesService.serializeResources(resources));
+    .then((resource) => {
+      res.json(resource.map(serializeResource));
     })
     .catch(next);
 });
@@ -17,7 +29,7 @@ resourcesRouter
   .all(requireAuth)
   .all(checkResourceExists)
   .get((req, res) => {
-    res.json(ResourcesService.serializeResources(res.resource));
+    res.json(ResourcesService.serializeResource(res.resource));
   });
 
 resourcesRouter
@@ -25,12 +37,12 @@ resourcesRouter
   .all(requireAuth)
   .all(checkResourceExists)
   .get((req, res, next) => {
-    ResourcesService.getReviewsForResources(
+    ResourcesService.getReviewsForResource(
       req.app.get("db"),
       req.params.resource_id
     )
       .then((reviews) => {
-        res.json(ResourcesService.serializeResourceReviews(reviews));
+        res.json(ResourcesService.serializeResource(reviews));
       })
       .catch(next);
   });
