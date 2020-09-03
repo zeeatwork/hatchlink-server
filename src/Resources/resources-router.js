@@ -26,15 +26,15 @@ resourcesRouter.route("/").get((req, res, next) => {
 
 resourcesRouter
   .route("/:resource_id")
-  .all(requireAuth)
+  // .all(requireAuth)
   .all(checkResourceExists)
   .get((req, res) => {
-    res.json(ResourcesService.serializeResource(res.resource));
+    res.json(serializeResource(res.resource));
   });
 
 resourcesRouter
   .route("/:resource_id/reviews/")
-  .all(requireAuth)
+  // .all(requireAuth)
   .all(checkResourceExists)
   .get((req, res, next) => {
     ResourcesService.getReviewsForResource(
