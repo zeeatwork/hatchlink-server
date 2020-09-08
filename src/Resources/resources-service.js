@@ -6,6 +6,16 @@ const ResourcesService = {
     return knex.select("*").from("hatchlink_resources");
   },
 
+  getReviewsForResources(knex, parent_id) {
+    return knex
+      .select("*")
+      .from("hatchlink_reviews")
+      .where({ parent_id })
+      .join("hatchlink_users", {
+        "hatchlink_users.id": "hatchlink_reviews.user_id",
+      });
+  },
+
   insertResource(knex, newResource) {
     return knex
       .insert(newResource)

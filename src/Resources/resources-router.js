@@ -4,6 +4,7 @@ const logger = require("../logger");
 const { isWebUrl } = require("valid-url");
 const ResourcesService = require("./resources-service");
 const { requireAuth } = require("../middleware/jwt-auth");
+const UsersService = require("../Users/users-service");
 
 const resourcesRouter = express.Router();
 const bodyParser = express.json();
@@ -14,6 +15,14 @@ const serializeResource = (resource) => ({
   url: resource.url,
   cost: resource.cost,
   subject: resource.subject,
+});
+
+const serializeReview = (review) => ({
+  id: review.id,
+  comment: review.comment,
+  user_name: review.user_name,
+  overall_rating: review.overall_rating,
+  date_created: review.date_created,
 });
 
 resourcesRouter.route("/").get((req, res, next) => {
@@ -37,12 +46,12 @@ resourcesRouter
   // .all(requireAuth)
   .all(checkResourceExists)
   .get((req, res, next) => {
-    ResourcesService.getReviewsForResource(
+    ResourcesService.getReviewsForResources(
       req.app.get("db"),
       req.params.resource_id
     )
       .then((reviews) => {
-        res.json(ResourcesService.serializeResource(reviews));
+        res.json(reviews.map(serializeReview));
       })
       .catch(next);
   });

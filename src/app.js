@@ -7,6 +7,7 @@ const { NODE_ENV } = require("./config");
 const resourcesRouter = require("./resources/resources-router");
 const reviewsRouter = require("./reviews/reviews-router");
 const authRouter = require("./auth/auth-router");
+const usersRouter = require("./Users/users-router");
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(helmet());
 app.use("/api/resources", resourcesRouter);
 app.use("/api/reviews", reviewsRouter);
 app.use("/api/auth/", authRouter);
+app.use("/api/users", usersRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response;
