@@ -31,15 +31,49 @@ resourcesRouter.route("/").get((req, res, next) => {
       res.json(resource.map(serializeResource));
     })
     .catch(next);
-});
+})
+    .post(jsonParser, (req, res, next) => {
+    const { name, url, cost, subject } = req.body;
+    const newResource = { resource_name: name, 
+                          resource_url: url, 
+                          resource_cost: cost, 
+                          resource_subject: subject
+     };
 
+    for (const [key, value] of Object.entries(newResource)) {
+      if (value == null) {
+        return res.status(400).json({
+          error: { message: `Missing '${key}' in request body` },
+        });
+      }
+    }
+  
 resourcesRouter
   .route("/:resource_id")
   // .all(requireAuth)
   .all(checkResourceExists)
   .get((req, res) => {
     res.json(serializeResource(res.resource));
-  });
+  })
+   .delete((req, res, next) => {
+    ResourcesService.deleteResource(req.app.get("db"), req.params.resource_id)
+      .then((numRowsAffected) => {
+        res.status(204).end();
+      })
+      .catch(next);
+  })
+  .patch(jsonParser, (req, res, next) => {
+    const { resource_name } = req.body;
+    const resourceToUpdate = { resource_name };
+
+    const numberOfValues = Object.values(resourceToUpdate).filter(Boolean).length;
+    if (numberOfValues === 0)
+      return res.status(400).json({
+        error: {
+          message: `Request body must contain 'resource_name'`,
+        },
+      });
+
 
 resourcesRouter
   .route("/:resource_id/reviews/")
