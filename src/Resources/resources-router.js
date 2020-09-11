@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const uuid = require("uuid");
 const logger = require("../logger");
 const { isWebUrl } = require("valid-url");
@@ -7,13 +8,14 @@ const { requireAuth } = require("../middleware/jwt-auth");
 const UsersService = require("../Users/users-service");
 
 const resourcesRouter = express.Router();
-const bodyParser = express.json();
+const jsonParser = express.json();
 
 const serializeResource = (resource) => ({
   id: resource.id,
   name: resource.name,
   url: resource.url,
   cost: resource.cost,
+  format: resource.format,
   subject: resource.subject,
 });
 
@@ -25,20 +27,24 @@ const serializeReview = (review) => ({
   date_created: review.date_created,
 });
 
-resourcesRouter.route("/").get((req, res, next) => {
-  ResourcesService.getAllResources(req.app.get("db"))
-    .then((resource) => {
-      res.json(resource.map(serializeResource));
-    })
-    .catch(next);
-})
-    .post(jsonParser, (req, res, next) => {
-    const { name, url, cost, subject } = req.body;
-    const newResource = { resource_name: name, 
-                          resource_url: url, 
-                          resource_cost: cost, 
-                          resource_subject: subject
-     };
+resourcesRouter
+  .route("/")
+  .get((req, res, next) => {
+    ResourcesService.getAllResources(req.app.get("db"))
+      .then((resource) => {
+        res.json(resource.map(serializeResource));
+      })
+      .catch(next);
+  })
+  .post(jsonParser, (req, res, next) => {
+    const { name, url, cost, format, subject } = req.body;
+    const newResource = {
+      name,
+      url,
+      cost,
+      format,
+      subject,
+    };
 
     for (const [key, value] of Object.entries(newResource)) {
       if (value == null) {
@@ -47,7 +53,17 @@ resourcesRouter.route("/").get((req, res, next) => {
         });
       }
     }
-  
+    newResource.name = name;
+
+    ResourcesService.insertResource(req.app.get("db"), newResource)
+      .then((resource) => {
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl, `/${resource.id}`))
+          .json(serializeResource(resource));
+      })
+      .catch(next);
+  });
 resourcesRouter
   .route("/:resource_id")
   // .all(requireAuth)
@@ -55,7 +71,7 @@ resourcesRouter
   .get((req, res) => {
     res.json(serializeResource(res.resource));
   })
-   .delete((req, res, next) => {
+  .delete((req, res, next) => {
     ResourcesService.deleteResource(req.app.get("db"), req.params.resource_id)
       .then((numRowsAffected) => {
         res.status(204).end();
@@ -66,14 +82,24 @@ resourcesRouter
     const { resource_name } = req.body;
     const resourceToUpdate = { resource_name };
 
-    const numberOfValues = Object.values(resourceToUpdate).filter(Boolean).length;
+    const numberOfValues = Object.values(resourceToUpdate).filter(Boolean)
+      .length;
     if (numberOfValues === 0)
       return res.status(400).json({
         error: {
           message: `Request body must contain 'resource_name'`,
         },
       });
-
+    ResourcesService.updateResource(
+      req.app.get("db"),
+      req.params.resource_id,
+      resourceToUpdate
+    )
+      .then((numRowsAffected) => {
+        res.status(204).end();
+      })
+      .catch(next);
+  });
 
 resourcesRouter
   .route("/:resource_id/reviews/")
