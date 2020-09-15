@@ -7,8 +7,26 @@ const reviewsRouter = express.Router();
 const jsonBodyParser = express.json();
 
 reviewsRouter.route("/").post(requireAuth, jsonBodyParser, (req, res, next) => {
-  const { resource_id, rating, text } = req.body;
-  const newReview = { resource_id, rating, text };
+  const {
+    comment,
+    overall_rating,
+    communication_rating,
+    has_exercises,
+    has_materials,
+    has_quizzes,
+    parent_id,
+  } = req.body;
+
+  newReview = {
+    comment,
+    overall_rating,
+    communication_rating,
+    has_exercises,
+    has_materials,
+    has_quizzes,
+    parent_id,
+    thumbs_up: false,
+  };
 
   for (const [key, value] of Object.entries(newReview))
     if (value == null)
