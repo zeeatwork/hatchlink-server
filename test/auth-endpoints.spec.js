@@ -85,3 +85,4 @@ it(`responds 400 'invalid user_name or password' when bad user_name`, () => {
          authToken: expectedToken,
        })
    })
+  })
