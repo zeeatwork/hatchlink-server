@@ -130,6 +130,7 @@ function makeReviewsArray(users, resources) {
   ];
 }
 function makeExpectedResource(users, resource, reviews = []) {
+  console.log(resource)
   return {
     id: resource.id,
     name: resource.name,
@@ -184,7 +185,7 @@ function makeMaliciousResource() {
 function makeResourcesFixtures() {
   const testUsers = makeUsersArray();
   const testResources = makeResourcesArray();
-  const testReviews = makeReviewsArray(testUsers, testReviews);
+  const testReviews = makeReviewsArray(testUsers, testResources);
   return { testUsers, testResources, testReviews };
 }
 

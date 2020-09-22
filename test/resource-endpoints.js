@@ -52,7 +52,7 @@ describe("Resources Endpoints", function () {
       const {
         maliciousResource,
         expectedResource,
-      } = helpers.makeMaliciouResource(testUser);
+      } = helpers.makeMaliciousResource(testUser);
 
       beforeEach("insert malicious resource", () => {
         return helpers.seedMaliciousResource(db, testUser, maliciousResource);
@@ -89,7 +89,7 @@ describe("Resources Endpoints", function () {
         const resourceId = 2;
         const expectedResource = helpers.makeExpectedResource(
           testUsers,
-          testResources[resourceId - 1],
+          // testResources[resourceId - 1],
           testReviews
         );
 
