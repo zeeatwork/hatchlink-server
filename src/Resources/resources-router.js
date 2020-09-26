@@ -20,7 +20,6 @@ const serializeResource = (resource) => ({
 });
 
 const serializeReview = (review) => ({
-  id: review.id,
   comment: review.comment,
   user_name: review.user_name,
   overall_rating: review.overall_rating,

@@ -1,6 +1,8 @@
 const knex = require("knex");
 const app = require("../src/app");
 const helpers = require("./test-helpers");
+const supertest = require("supertest");
+const { expect } = require("chai");
 
 describe("Reviews Endpoints", function () {
   let db;
@@ -26,7 +28,7 @@ describe("Reviews Endpoints", function () {
       helpers.seedResourcesTables(db, testUsers, testResources)
     );
 
-    it(`creates an review, responding with 201 and the new review`, function () {
+    it(`creates a review, responding with 201 and the new review`, function () {
       this.retries(3);
       const testResource = testResources[0];
       const testUser = testUsers[0];
@@ -36,38 +38,52 @@ describe("Reviews Endpoints", function () {
         user_id: testUser.id,
       };
       return supertest(app)
-        .post("/api/reviews")
-        .send(newReview)
+        .post("/api/auth/login")
+        .send({
+          user_name: testUsers[0].user_name,
+          password: testUsers[0].password,
+        })
         .expect(201)
-        .expect((res) => {
-          expect(res.body).to.have.property("id");
-          expect(res.body.comment).to.eql(newReview.comment);
-          expect(res.body.parent_id).to.eql(newReview.parent_id);
-          expect(res.body.user.id).to.eql(testUser.id);
-          expect(res.headers.location).to.eql(`/api/reviews/${res.body.id}`);
+        .expect((response) => {
+          // let data = response.json();
+          // let authToken = data.authToken;
+          return supertest(app)
+            .post("/api/reviews")
+            .set("Authorization", `Bearer ${response.body.authToken}`)
+            .send(newReview)
+            .expect(201);
+          expect(response.body).to.have.property("id");
+          expect(response.body.comment).to.eql(newReview.comment);
+          expect(response.body.parent_id).to.eql(newReview.parent_id);
+          expect(response.body.user.id).to.eql(testUser.id);
+          expect(response.headers.location).to.eql(
+            `/api/reviews/${response.body.id}`
+          );
           const expectedDate = new Date().toLocaleString("en", {
             timeZone: "UTC",
           });
-          const actualDate = new Date(res.body.date_created).toLocaleString();
+          const actualDate = new Date(
+            response.body.date_created
+          ).toLocaleString();
           expect(actualDate).to.eql(expectedDate);
-        })
-        .expect((res) =>
-          db
-            .from("hatchlink_reviews")
-            .select("*")
-            .where({ id: res.body.id })
-            .first()
-            .then((row) => {
-              expect(row.comment).to.eql(newReview.comment);
-              expect(row.parent_id).to.eql(newReview.parent_id);
-              expect(row.user_id).to.eql(newReview.user_id);
-              const expectedDate = new Date().toLocaleString("en", {
-                timeZone: "UTC",
-              });
-              const actualDate = new Date(row.date_created).toLocaleString();
-              expect(actualDate).to.eql(expectedDate);
-            })
-        );
+        });
+      expect((response) =>
+        db
+          .from("hatchlink_reviews")
+          .select("*")
+          .where({ id: response.body.id })
+          .first()
+          .then((row) => {
+            expect(row.comment).to.eql(newReview.comment);
+            expect(row.parent_id).to.eql(newReview.parent_id);
+            expect(row.user_id).to.eql(newReview.user_id);
+            const expectedDate = new Date().toLocaleString("en", {
+              timeZone: "UTC",
+            });
+            const actualDate = new Date(row.date_created).toLocaleString();
+            expect(actualDate).to.eql(expectedDate);
+          })
+      );
     });
 
     const requiredFields = ["review", "user_id", "resource_id"];
@@ -78,15 +94,20 @@ describe("Reviews Endpoints", function () {
       const newReview = {
         comment: "Test new comment",
         user_id: testUser.id,
-        parent_id: testParent.id,
+        parent_id: testResource.id,
       };
 
       it(`responds with 400 and an error message when the '${field}' is missing`, () => {
         delete newReview[field];
 
+        return supertest(app).post("/api/reviews").send(newReview);
         return supertest(app)
-          .post("/api/review")
-          .send(newReview)
+          .post("/api/auth/login")
+          .send({
+            user_name: testUsers[0].user_name,
+            password: testUsers[0].password,
+          })
+          .expect(200)
           .expect(400, {
             error: `Missing '${field}' in request body`,
           });

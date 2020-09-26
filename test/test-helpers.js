@@ -1,3 +1,5 @@
+const bcrypt = require("bcryptjs");
+
 function makeUsersArray() {
   return [
     {
@@ -129,8 +131,7 @@ function makeReviewsArray(users, resources) {
     },
   ];
 }
-function makeExpectedResource(users, resource, reviews = []) {
-  console.log(resource)
+function makeExpectedResource(resource, reviews = []) {
   return {
     id: resource.id,
     name: resource.name,
@@ -138,27 +139,22 @@ function makeExpectedResource(users, resource, reviews = []) {
     cost: resource.cost,
     format: resource.format,
     subject: resource.subject,
-    date_created: resource.date_created.toISOString(),
+    date_created: resource.date_created,
   };
 }
 
 function makeExpectedResourceReviews(users, parentId, reviews) {
   const expectedReviews = reviews.filter(
-    (review) => review.resource_id === reviewId
+    (review) => review.parent_id === parentId
   );
 
   return expectedReviews.map((review) => {
     const reviewUser = users.find((user) => user.id === review.user_id);
     return {
-      id: review.id,
-      comment: comment.text,
-      date_created: comment.date_created.toISOString(),
-      user: {
-        id: reviewUser.id,
-        user_name: reviewUser.user_name,
-        date_created: reviewUser.date_created.toISOString(),
-        date_modified: reviewUser.date_modified || null,
-      },
+      comment: review.comment,
+      date_created: review.date_created.toISOString(),
+      user_name: reviewUser.user_name,
+      overall_rating: 5,
     };
   });
 }
@@ -168,13 +164,15 @@ function makeMaliciousResource() {
     id: 911,
     date_created: new Date(),
     name: 'Naughty naughty very naughty <script>alert("xss");</script>',
-    content: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`,
+    format: "",
+    subject: "",
   };
   const expectedResource = {
     ...makeExpectedResource(maliciousResource),
     title:
       'Naughty naughty very naughty &lt;script&gt;alert("xss");&lt;/script&gt;',
-    content: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`,
+    format: "",
+    subject: "",
   };
   return {
     maliciousResource,
@@ -243,19 +241,20 @@ function seedResourcesTables(db, users, resources, reviews = []) {
     await trx.raw(`SELECT setval('hatchlink_resources_id_seq', ?)`, [
       resources[resources.length - 1].id,
     ]);
+
     // only insert comments if there are some, also update the sequence counter
     if (reviews.length) {
-      await trx.into("thinkful_reviews").insert(reviews);
-      await trx.raw(`SELECT setval('thinkful_reviews_id_seq', ?)`, [
+      await trx.into("hatchlink_reviews").insert(reviews);
+      await trx.raw(`SELECT setval('hatchlink_reviews_id_seq', ?)`, [
         reviews[reviews.length - 1].id,
       ]);
     }
   });
 }
 
-function seedMaliciousReview(db, user, resource) {
+function seedMaliciousResource(db, user, resource) {
   return seedUsers(db, [user]).then(() =>
-    db.into("thinkful_resources").insert([resource])
+    db.into("hatchlink_resources").insert([resource])
   );
 }
 
@@ -278,7 +277,7 @@ module.exports = {
   makeResourcesFixtures,
   cleanTables,
   seedResourcesTables,
-  seedMaliciousReview,
+  seedMaliciousResource,
   makeAuthHeader,
   seedUsers,
 };
