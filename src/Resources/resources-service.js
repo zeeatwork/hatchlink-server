@@ -12,7 +12,7 @@ const ResourcesService = {
       .from("hatchlink_reviews")
       .where({ parent_id })
       .join("hatchlink_users", {
-        "hatchlink_users.id": "hatchlink_reviews.user_id",
+        "hatchlink_users.id": "hatchlink_reviews.user_name",
       });
   },
 

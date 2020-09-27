@@ -83,50 +83,57 @@ function makeReviewsArray(users, resources) {
     {
       id: 1,
       comment: "First test comment!",
+      overall_rating: 5,
       parent_id: resources[0].id,
-      user_id: users[0].id,
+      user_name: users[0].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
       id: 2,
       comment: "Second test comment!",
+      overall_rating: 5,
       parent_id: resources[0].id,
-      user_id: users[1].id,
+      user_name: users[1].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
       id: 3,
       comment: "Third test comment!",
+      overall_rating: 5,
       parent_id: resources[0].id,
-      user_id: users[2].id,
+      user_name: users[2].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
       id: 4,
       comment: "Fourth test comment!",
+      overall_rating: 5,
       parent_id: resources[0].id,
-      user_id: users[3].id,
+      user_name: users[3].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
       id: 5,
       comment: "Fifth test comment!",
+      overall_rating: 5,
       parent_id: resources[resources.length - 1].id,
-      user_id: users[0].id,
+      user_name: users[0].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
       id: 6,
       comment: "Sixth test comment!",
+      overall_rating: 5,
       parent_id: resources[resources.length - 1].id,
-      user_id: users[2].id,
+      user_name: users[2].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
       id: 7,
       comment: "Seventh test comment!",
+      overall_rating: 5,
       parent_id: resources[3].id,
-      user_id: users[0].id,
+      user_name: users[0].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
   ];
@@ -149,7 +156,7 @@ function makeExpectedResourceReviews(users, parentId, reviews) {
   );
 
   return expectedReviews.map((review) => {
-    const reviewUser = users.find((user) => user.id === review.user_id);
+    const reviewUser = users.find((user) => user.id === review.user_name);
     return {
       comment: review.comment,
       date_created: review.date_created.toISOString(),

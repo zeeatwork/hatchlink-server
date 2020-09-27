@@ -29,13 +29,12 @@ describe("Reviews Endpoints", function () {
     );
 
     it(`creates a review, responding with 201 and the new review`, function () {
-      this.retries(3);
       const testResource = testResources[0];
       const testUser = testUsers[0];
       const newReview = {
         comment: "Test new review",
         resource_id: testResource.id,
-        user_id: testUser.id,
+        user_name: testUser.user_name,
       };
       return supertest(app)
         .post("/api/auth/login")
@@ -43,7 +42,7 @@ describe("Reviews Endpoints", function () {
           user_name: testUsers[0].user_name,
           password: testUsers[0].password,
         })
-        .expect(201)
+        .expect(200)
         .expect((response) => {
           // let data = response.json();
           // let authToken = data.authToken;
@@ -55,7 +54,7 @@ describe("Reviews Endpoints", function () {
           expect(response.body).to.have.property("id");
           expect(response.body.comment).to.eql(newReview.comment);
           expect(response.body.parent_id).to.eql(newReview.parent_id);
-          expect(response.body.user.id).to.eql(testUser.id);
+          expect(response.body.user.user_name).to.eql(testUser.user_name);
           expect(response.headers.location).to.eql(
             `/api/reviews/${response.body.id}`
           );
@@ -76,7 +75,7 @@ describe("Reviews Endpoints", function () {
           .then((row) => {
             expect(row.comment).to.eql(newReview.comment);
             expect(row.parent_id).to.eql(newReview.parent_id);
-            expect(row.user_id).to.eql(newReview.user_id);
+            expect(row.user_name).to.eql(newReview.user_name);
             const expectedDate = new Date().toLocaleString("en", {
               timeZone: "UTC",
             });
@@ -86,14 +85,14 @@ describe("Reviews Endpoints", function () {
       );
     });
 
-    const requiredFields = ["review", "user_id", "resource_id"];
+    const requiredFields = ["review", "user_name", "resource_id"];
 
     requiredFields.forEach((field) => {
       const testResource = testResources[0];
       const testUser = testUsers[0];
       const newReview = {
         comment: "Test new comment",
-        user_id: testUser.id,
+        user_name: testUser.user_name,
         parent_id: testResource.id,
       };
 

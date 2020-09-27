@@ -11,5 +11,5 @@ CREATE TABLE hatchlink_reviews (
     parent_id INTEGER
         REFERENCES hatchlink_resources(id) ON DELETE CASCADE NOT NULL,
     user_name INTEGER
-        REFERENCES hatchlink_users(user_name) ON DELETE CASCADE NOT NULL
+        REFERENCES hatchlink_users(id) ON DELETE CASCADE NOT NULL
 );
