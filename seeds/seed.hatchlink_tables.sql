@@ -63,7 +63,7 @@ INSERT INTO hatchlink_reviews (
   overall_rating,
   communication_rating,
   parent_id,
-  user_id,
+  user_name,
   has_exercises,
   has_quizzes,
   has_materials,
