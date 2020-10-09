@@ -10,6 +10,6 @@ CREATE TABLE hatchlink_reviews (
     date_created TIMESTAMPTZ DEFAULT now() NOT NULL,
     parent_id INTEGER
         REFERENCES hatchlink_resources(id) ON DELETE CASCADE NOT NULL,
-    user_name INTEGER
+    user_id INTEGER
         REFERENCES hatchlink_users(id) ON DELETE CASCADE NOT NULL
 );

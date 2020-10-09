@@ -12,7 +12,7 @@ const ResourcesService = {
       .from("hatchlink_reviews")
       .where({ parent_id })
       .join("hatchlink_users", {
-        "hatchlink_users.id": "hatchlink_reviews.user_name",
+        "hatchlink_users.id": "hatchlink_reviews.user_id",
       });
   },
 
@@ -34,7 +34,10 @@ const ResourcesService = {
     return knex("hatchlink_resources").where({ id }).delete();
   },
   updateResource(knex, id, newResourceFields) {
-    return knex("hatchlink_resources").where({ id }).update(newResourceFields);
+    console.log("newResourceFields", newResourceFields);
+    return knex("hatchlink_resources")
+      .where({ id: id })
+      .update(newResourceFields);
   },
 };
 

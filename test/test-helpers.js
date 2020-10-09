@@ -85,7 +85,7 @@ function makeReviewsArray(users, resources) {
       comment: "First test comment!",
       overall_rating: 5,
       parent_id: resources[0].id,
-      user_name: users[0].id,
+      user_id: users[0].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
@@ -93,7 +93,7 @@ function makeReviewsArray(users, resources) {
       comment: "Second test comment!",
       overall_rating: 5,
       parent_id: resources[0].id,
-      user_name: users[1].id,
+      user_id: users[1].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
@@ -101,7 +101,7 @@ function makeReviewsArray(users, resources) {
       comment: "Third test comment!",
       overall_rating: 5,
       parent_id: resources[0].id,
-      user_name: users[2].id,
+      user_id: users[2].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
@@ -109,7 +109,7 @@ function makeReviewsArray(users, resources) {
       comment: "Fourth test comment!",
       overall_rating: 5,
       parent_id: resources[0].id,
-      user_name: users[3].id,
+      user_id: users[3].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
@@ -117,7 +117,7 @@ function makeReviewsArray(users, resources) {
       comment: "Fifth test comment!",
       overall_rating: 5,
       parent_id: resources[resources.length - 1].id,
-      user_name: users[0].id,
+      user_id: users[0].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
@@ -125,7 +125,7 @@ function makeReviewsArray(users, resources) {
       comment: "Sixth test comment!",
       overall_rating: 5,
       parent_id: resources[resources.length - 1].id,
-      user_name: users[2].id,
+      user_id: users[2].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
@@ -133,7 +133,7 @@ function makeReviewsArray(users, resources) {
       comment: "Seventh test comment!",
       overall_rating: 5,
       parent_id: resources[3].id,
-      user_name: users[0].id,
+      user_id: users[0].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
   ];
@@ -156,11 +156,11 @@ function makeExpectedResourceReviews(users, parentId, reviews) {
   );
 
   return expectedReviews.map((review) => {
-    const reviewUser = users.find((user) => user.id === review.user_name);
+    const reviewUser = users.find((user) => user.id === review.user_id);
     return {
       comment: review.comment,
       date_created: review.date_created.toISOString(),
-      user_name: reviewUser.user_name,
+      user_id: reviewUser.user_id,
       overall_rating: 5,
     };
   });

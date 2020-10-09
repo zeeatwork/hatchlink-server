@@ -78,17 +78,26 @@ resourcesRouter
       .catch(next);
   })
   .patch(jsonParser, (req, res, next) => {
-    const { resource_name } = req.body;
-    const resourceToUpdate = { resource_name };
+    const { resource_name, id, url, cost, format } = req.body;
 
-    const numberOfValues = Object.values(resourceToUpdate).filter(Boolean)
-      .length;
-    if (numberOfValues === 0)
-      return res.status(400).json({
-        error: {
-          message: `Request body must contain 'resource_name'`,
-        },
-      });
+    const resourceToUpdate = {
+      name: resource_name,
+      id,
+      url,
+      cost,
+      format,
+    };
+    console.log(req.body);
+    //const resourceToUpdate = req.body;
+
+    //const numberOfValues = Object.values(resourceToUpdate).filter(Boolean)
+    //.length;
+    // if (numberOfValues === 0)
+    //   return res.status(400).json({
+    //     error: {
+    //       message: `Request body must contain 'resource_name'`,
+    //     },
+    //   });
     ResourcesService.updateResource(
       req.app.get("db"),
       req.params.resource_id,
