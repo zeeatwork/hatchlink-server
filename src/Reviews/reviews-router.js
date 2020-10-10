@@ -43,7 +43,7 @@ reviewsRouter.route("/").post(requireAuth, jsonBodyParser, (req, res, next) => {
         .location(path.posix.join(req.originalUrl, `/${review.id}`))
         .json(ReviewsService.serializeReview(review));
     })
-    .catch(next);
+    .catch((error) => console.log(error));
 });
 
 module.exports = reviewsRouter;
