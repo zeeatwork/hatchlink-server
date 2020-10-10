@@ -73,7 +73,7 @@ resourcesRouter
   .delete((req, res, next) => {
     ResourcesService.deleteResource(req.app.get("db"), req.params.resource_id)
       .then((numRowsAffected) => {
-        res.status(204).end();
+        res.status(204).send({ success: true });
       })
       .catch(next);
   })
