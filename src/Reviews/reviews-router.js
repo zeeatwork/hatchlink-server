@@ -35,7 +35,7 @@ reviewsRouter.route("/").post(requireAuth, jsonBodyParser, (req, res, next) => {
       });
 
   newReview.user_id = req.user.id;
-
+  console.log(newReview, "new review test");
   ReviewsService.insertReview(req.app.get("db"), newReview)
     .then((review) => {
       res

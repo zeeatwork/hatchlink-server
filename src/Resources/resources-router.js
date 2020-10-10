@@ -110,7 +110,7 @@ resourcesRouter
   });
 
 resourcesRouter
-  .route("/:resource_id/reviews/")
+  .route("/:resource_id/reviews")
   // .all(requireAuth)
   .all(checkResourceExists)
   .get((req, res, next) => {

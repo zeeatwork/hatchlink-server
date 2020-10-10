@@ -33,7 +33,7 @@ const ReviewsService = {
       .insert(newReview)
       .into("hatchlink_reviews")
       .returning("*")
-      .then(([review]) => review);
+      .then((review) => review);
     //   .then((review) => ReviewsService.getById(db, review.id));
   },
 
