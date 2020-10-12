@@ -81,7 +81,7 @@ function makeResourcesArray() {
 function makeReviewsArray(users, resources) {
   return [
     {
-      id: 1,
+      id: 2,
       comment: "First test comment!",
       overall_rating: 5,
       parent_id: resources[1].id,
@@ -89,7 +89,7 @@ function makeReviewsArray(users, resources) {
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
-      id: 2,
+      id: 1,
       comment: "Second test comment!",
       overall_rating: 5,
       parent_id: resources[2].id,
@@ -157,10 +157,12 @@ function makeExpectedResourceReviews(users, parentId, reviews) {
 
   return expectedReviews.map((review) => {
     const reviewUser = users.find((user) => user.id === review.user_id);
+    console.log("looking for user", reviewUser);
     return {
+      id: review.id,
       comment: review.comment,
       date_created: review.date_created.toISOString(),
-      user_id: reviewUser.users_id,
+      user_id: reviewUser.id,
       overall_rating: 5,
     };
   });

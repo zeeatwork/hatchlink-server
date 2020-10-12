@@ -21,7 +21,8 @@ const serializeResource = (resource) => ({
 
 const serializeReview = (review) => ({
   comment: review.comment,
-  user_name: review.user_name,
+  id: review.id,
+  user_id: review.user_id,
   overall_rating: review.overall_rating,
   date_created: review.date_created,
 });
