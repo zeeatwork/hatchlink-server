@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 function makeUsersArray() {
   return [
     {
-      id: 102,
+      id: 1,
       user_name: "test-user-1",
       full_name: "Test user 1",
       password: "password",
@@ -11,7 +11,7 @@ function makeUsersArray() {
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
-      id: 211,
+      id: 2,
       user_name: "test-user-2",
       full_name: "Test user 2",
       password: "password",
@@ -19,7 +19,7 @@ function makeUsersArray() {
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
-      id: 321,
+      id: 3,
       user_name: "test-user-3",
       full_name: "Test user 3",
       password: "password",
@@ -27,7 +27,7 @@ function makeUsersArray() {
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
-      id: 40,
+      id: 4,
       user_name: "test-user-4",
       full_name: "Test user 4",
       password: "password",
@@ -40,7 +40,7 @@ function makeUsersArray() {
 function makeResourcesArray() {
   return [
     {
-      id: 19,
+      id: 1,
       name: "First test post!",
       url: "How-to",
       cost: 30,
@@ -49,7 +49,7 @@ function makeResourcesArray() {
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
-      id: 27,
+      id: 2,
       name: "Second test post!",
       url: "How-to",
       cost: 30,
@@ -58,7 +58,7 @@ function makeResourcesArray() {
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
-      id: 39,
+      id: 3,
       name: "Third test post!",
       url: "How-to",
       cost: 37,
@@ -67,7 +67,7 @@ function makeResourcesArray() {
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
-      id: 42,
+      id: 4,
       name: "Fourth test post!",
       url: "How-to",
       cost: 30,
@@ -84,24 +84,24 @@ function makeReviewsArray(users, resources) {
       id: 1,
       comment: "First test comment!",
       overall_rating: 5,
-      parent_id: resources[0].id,
-      user_id: users[0].id,
+      parent_id: resources[1].id,
+      user_id: users[1].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
       id: 2,
       comment: "Second test comment!",
       overall_rating: 5,
-      parent_id: resources[0].id,
-      user_id: users[1].id,
+      parent_id: resources[2].id,
+      user_id: users[2].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
       id: 3,
       comment: "Third test comment!",
       overall_rating: 5,
-      parent_id: resources[0].id,
-      user_id: users[2].id,
+      parent_id: resources[3].id,
+      user_id: users[3].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
     {
@@ -133,7 +133,7 @@ function makeReviewsArray(users, resources) {
       comment: "Seventh test comment!",
       overall_rating: 5,
       parent_id: resources[3].id,
-      user_id: users[0].id,
+      user_id: users[2].id,
       date_created: new Date("2029-01-22T16:28:32.615Z"),
     },
   ];
@@ -160,7 +160,7 @@ function makeExpectedResourceReviews(users, parentId, reviews) {
     return {
       comment: review.comment,
       date_created: review.date_created.toISOString(),
-      user_id: reviewUser.user_id,
+      user_id: reviewUser.users_id,
       overall_rating: 5,
     };
   });

@@ -88,7 +88,7 @@ describe("Resources Endpoints", function () {
       );
 
       it("responds with 200 and the specified resource", () => {
-        const resourceId = 19;
+        const resourceId = 1;
 
         return supertest(app)
           .get(`/api/resources/${resourceId}`)
@@ -138,7 +138,7 @@ describe("Resources Endpoints", function () {
       );
 
       it("responds with 200 and the specified reviews", () => {
-        const resourceId = 19;
+        const resourceId = 2;
         const expectedReviews = helpers.makeExpectedResourceReviews(
           testUsers,
           resourceId,
